@@ -32,12 +32,12 @@ import Triangle from "./static/images/Yoga/Triangle.png";
 import Twist from "./static/images/Yoga/Twist.png";
 import YogaThemeImage from "./static/images/Yoga/theme.png";
 //Toilet images
-import Help from "./static/images/Toilet/help.png"
-import Hold from "./static/images/Toilet/hold.png"
-import Peek from "./static/images/Toilet/peek.png"
-import Rest from "./static/images/Toilet/rest.png"
-import Smelly from "./static/images/Toilet/smelly.png"
-import Squat from "./static/images/Toilet/squat.png"
+import Help from "./static/images/Toilet/help.png";
+import Hold from "./static/images/Toilet/hold.png";
+import Peek from "./static/images/Toilet/peek.png";
+import Rest from "./static/images/Toilet/rest.png";
+import Smelly from "./static/images/Toilet/smelly.png";
+import Squat from "./static/images/Toilet/squat.png";
 import ToiletThemeImage from "./static/images/Toilet/theme.png";
 
 import BGImage from "./static/images/bg.jpg";
@@ -59,8 +59,8 @@ const imageSets = {
   },
   toilet: {
     images: [Help, Hold, Peek, Rest, Smelly, Squat],
-    placeholder: ToiletThemeImage
-  }
+    placeholder: ToiletThemeImage,
+  },
 };
 
 const Container = styled.div`
