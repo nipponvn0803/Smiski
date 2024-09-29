@@ -42,7 +42,7 @@ import ToiletThemeImage from "./static/images/Toilet/theme.png";
 
 import BGImage from "./static/images/bg.jpg";
 
-const serverURL = "https://server-steel-eight-54.vercel.app/";
+const serverURL = "https://server-steel-eight-54.vercel.app";
 
 const imageSets = {
   moving: {
