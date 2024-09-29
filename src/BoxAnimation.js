@@ -42,7 +42,7 @@ import ToiletThemeImage from "./static/images/Toilet/theme.png";
 
 import BGImage from "./static/images/bg.jpg";
 
-const serverURL = "http://localhost:5000";
+const serverURL = "https://server-steel-eight-54.vercel.app/";
 
 const imageSets = {
   moving: {
@@ -104,10 +104,16 @@ const BoxAnimation = () => {
       axios
         .get(`${serverURL}/api/images/${selectedBox}`)
         .then((response) => {
-          setOpenedImages(response.data);
+          if (response.data === "") {
+            setOpenedImages([])
+          } else {
+            setOpenedImages(response.data.split(','));
+          }
           axios
             .get(`${serverURL}/api/can-open-box`)
-            .then((res) => setCanOpenBox(res.data.canOpen))
+            .then((res) => {
+              console.log(res.data);
+              setCanOpenBox(res.data.canOpen)})
             .catch((err) =>
               console.error("Error checking box opening status", err),
             );

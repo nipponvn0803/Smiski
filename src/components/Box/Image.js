@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { useEffect } from "react";
 
 const ImageContainer = styled.div`
   display: flex;
@@ -23,9 +22,6 @@ const FlavorText = styled.div`
 `;
 
 const Image = ({ src, alt, isExpanded, onClick }) => {
-  useEffect(() => {
-    console.log(isExpanded);
-  }, [isExpanded]);
   return (
     <ImageContainer>
       <StyledImage
