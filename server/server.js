@@ -1,36 +1,11 @@
-const express = require("express");
-const fs = require("fs");
-const path = require("path");
-const cors = require("cors");
+import express from 'express';
+import { kv } from "@vercel/kv";
+
 const app = express();
 const PORT = 5000;
-app.use(cors());
-app.use(express.json());
 
-// Use __dirname to construct the absolute path to the data.json file
-const dataFilePath = path.join(__dirname, "data.json");
-
-function readDataFromFile() {
-  try {
-    const data = fs.readFileSync(dataFilePath);
-    return JSON.parse(data);
-  } catch (error) {
-    console.error("Error reading data.json file:", error);
-    throw error;
-  }
-}
-
-function writeDataToFile(data) {
-  try {
-    fs.writeFileSync(dataFilePath, JSON.stringify(data, null, 2));
-  } catch (error) {
-    console.error("Error writing to data.json file:", error);
-    throw error;
-  }
-}
-
-function hasOpenedToday() {
-  const data = readDataFromFile();
+async function hasOpenedToday() {
+  const data = await JSON.parse(kv.hGetAll("data"));
   const currentTime = new Date();
   const resetTime = new Date();
   resetTime.setUTCHours(8, 0, 0, 0); // 10 AM GMT+2 is 8 AM UTC
@@ -39,13 +14,13 @@ function hasOpenedToday() {
     resetTime.setUTCDate(resetTime.getUTCDate() - 1); // Go back one day if current time is before reset time
   }
 
-  const lastOpenedDate = new Date(data.lastOpened.date);
+  const lastOpenedDate = new Date(data.latsOpened.date);
   return lastOpenedDate >= resetTime;
 }
 
-app.get("/api/images/:boxType", (req, res) => {
+app.get("/api/images/:boxType", async (req, res) => {
   const { boxType } = req.params;
-  const data = readDataFromFile();
+  const data = await kv.hGetAll("data");
 
   if (!data[boxType]) {
     return res.status(400).json({ error: "Invalid box type" });
@@ -54,7 +29,7 @@ app.get("/api/images/:boxType", (req, res) => {
   res.json(data[boxType]);
 });
 
-app.post("/api/images/:boxType", (req, res) => {
+app.post("/api/images/:boxType", async (req, res) => {
   const { boxType } = req.params;
   const { imageUrl } = req.body;
 
@@ -69,7 +44,7 @@ app.post("/api/images/:boxType", (req, res) => {
     return res.status(400).json({ error: "Image URL is required" });
   }
 
-  const data = readDataFromFile();
+  const data = await kv.hGetAll("data");
 
   if (!data[boxType]) {
     return res.status(400).json({ error: "Invalid box type" });
@@ -81,7 +56,7 @@ app.post("/api/images/:boxType", (req, res) => {
     date: new Date().toISOString(),
   };
 
-  writeDataToFile(data);
+  await kv.hSet("data", JSON.stringify(data));
 
   res.status(201).json({ message: "Image URL saved successfully" });
 });
