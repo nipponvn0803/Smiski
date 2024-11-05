@@ -105,15 +105,16 @@ const BoxAnimation = () => {
         .get(`${serverURL}/api/images/${selectedBox}`)
         .then((response) => {
           if (response.data === "") {
-            setOpenedImages([])
+            setOpenedImages([]);
           } else {
-            setOpenedImages(response.data.split(','));
+            setOpenedImages(response.data.split(","));
           }
           axios
             .get(`${serverURL}/api/can-open-box`)
             .then((res) => {
               console.log(res.data);
-              setCanOpenBox(res.data.canOpen)})
+              setCanOpenBox(res.data.canOpen);
+            })
             .catch((err) =>
               console.error("Error checking box opening status", err),
             );
@@ -154,13 +155,9 @@ const BoxAnimation = () => {
           setOpenedImages((prevImages) => [...prevImages, finalImage]);
         })
         .catch((error) => {
-          if (error.response && error.response.status === 403) {
-            alert(
-              "You have already opened a box today. Please try again tomorrow after 10 AM GMT+2.",
-            );
-          } else {
-            console.error("There was an error saving the image!", error);
-          }
+          console.error("There was an error saving the image!", error);
+          alert("There was an error saving the image!");
+
           setIsSpinning(false);
         });
     }, 5000); // 5 seconds
